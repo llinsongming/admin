@@ -1,0 +1,65 @@
+
+html,body,.app{
+    width: 100%;height: 100%;
+}
+body{
+    font-size: 14px;
+    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+    color:#364347;
+    background:#e4e7eb;
+    min-width:1250px;
+    overflow-x:auto;
+}
+html, body, div, table, ul, li,ol, dl, dd, dt, a, img ,label,p,h1,h2,h3,h4,h5,h6,span{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    -moz-box-sizing:border-box;
+}
+input{
+    margin:0;
+    padding:0;
+}
+ul,ol{
+    list-style: none;
+}
+em,i{
+    font-style: normal;
+}
+img{
+    max-width: 100%;
+    display: block;
+    border:none;
+
+}
+.fl{
+    float: left;
+}
+.fr{
+    float: right;
+}
+textarea{
+    resize:none;
+}
+form{ margin:0; }
+
+.clearfix:after { content:"."; display:block; height:0; visibility:hidden; clear:both; }
+.clearfix { zoom:1; }
+
+a,a:hover,a:focus{
+    text-decoration:none;
+    outline:none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
