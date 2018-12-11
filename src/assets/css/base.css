@@ -51,9 +51,13 @@ a,a:hover,a:focus{
     outline:none;
 }
 
-
-
-
+/* 通用 */
+.el-form .el-form-item{
+    display: inline-block;
+}
+.user .el-select{
+    width: 120px;
+}
 
 
 

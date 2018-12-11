@@ -27,7 +27,7 @@ export default {
         height: 50px;
         line-height: 50px;
         width: 100%;
-        min-width: 1250px;
+        // min-width: 1250px;
         background: #2599f2;
         background: linear-gradient(90deg,#2599f2,#3b7eed);
         padding: 0 20px;
