@@ -43,8 +43,8 @@ export default {
     methods: {
         meuns(){
             let that = this;
-            that.$axios.getTest('http://120.79.174.103:666/menus').then(function(res){
-                that.nav = res.data.data[0].data;
+            that.$axios.get('/menus').then(function(res){console.log(res)
+                that.nav = res.data[0].data;
             })
         },
         handleOpen(key, keyPath) {

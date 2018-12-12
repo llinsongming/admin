@@ -1,5 +1,6 @@
-import axios from 'axios'
+import axios from 'axios';
 import { Loading } from 'element-ui';
+import router from '../router/index';
 
 let loading        //定义loading变量
 
@@ -14,7 +15,7 @@ function endLoading() {    //使用Element loading-close 方法
     loading.close()
 }
 
-const baseUrl = 'https://bm.urundata.com:28888';
+const baseUrl = 'http://120.79.174.103:666';
 export default {
     baseUrl:baseUrl,
     get(_url, _params = {}){
@@ -25,27 +26,23 @@ export default {
                 params: _params,
                 method: 'get',
                 headers: {
-                }
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    "auth": window.localStorage.getItem('access_token'),
+				},
+				transformRequest: [function (data) {
+					let ret = ''
+					for (let it in data) {
+					  ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+					}
+                    return ret
+				}],
             }).then((res) => {
                 endLoading()//loading结束
-                resolve(res)
-            }).catch((error) => {
-                reject(error)
-            })
-        })
-    },
-    getTest(_url, _params = {}){
-        return new Promise((resolve, reject) => {
-            startLoading()//loading开始
-            axios({
-                url: _url,
-                params: _params,
-                method: 'get',
-                headers: {
+                if(!res.data.status && res.data.message == 'unauth'){console.log(12312312)
+                    router.push({name: 'LoginView'});
+                } else {
+                    resolve(res.data);
                 }
-            }).then((res) => {
-                endLoading()//loading结束
-                resolve(res)
             }).catch((error) => {
                 reject(error)
             })
@@ -60,7 +57,7 @@ export default {
 				data: _params,
 				headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
-                    // "auth": window.localStorage.getItem('token'),
+                    "auth": window.localStorage.getItem('access_token'),
 				},
 				transformRequest: [function (data) {
 					let ret = ''
@@ -71,7 +68,11 @@ export default {
 				}],
             }).then(res => {
                 // endLoading()//loading结束
-                resolve(res)
+                if(!res.data.status && res.data.message == 'unauth'){
+                    router.push({name: 'login'});
+                } else {
+                    resolve(res.data);
+                }
             }).catch(error => {
 
             	reject(error)

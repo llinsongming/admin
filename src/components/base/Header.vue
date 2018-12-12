@@ -9,13 +9,21 @@
             </h1>
         </div>
         <div class="exit fr">
+            {{name}}
             <el-button type="text">退出</el-button>
         </div>
     </div>
 </template>
 <script>
 export default {
-    
+    data(){
+        return{
+            name:'121'
+        }
+    },
+    mounted(){
+        this.name = this.$route.username
+    }
 }
 </script>
 <style lang="less" scoped>

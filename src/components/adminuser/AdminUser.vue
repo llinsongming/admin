@@ -19,13 +19,66 @@
                 </el-form>
             </div>
             <div class="fr">
-                2
+                <el-form>
+                    <el-form-item>
+                        <el-button type="primary" size="small">账号创建</el-button>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" size="small">角色列表</el-button>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" size="small">菜单列表</el-button>
+                    </el-form-item>
+                </el-form>
             </div>
+        </div>
+        <div class="table-list">
+            <el-table
+                :data="tableData"
+                border
+                style="width: 100%"
+                >
+                <el-table-column
+                prop="userId"
+                label="ID(内部)"
+                align="center">
+                </el-table-column>
+                <el-table-column
+                prop="phone"
+                label="手机号"
+                align="center">
+                </el-table-column>
+                <el-table-column
+                prop="user"
+                label="使用人"
+                align="center">
+                </el-table-column>
+                <el-table-column
+                label="后台角色"
+                align="center">
+                </el-table-column>
+                <el-table-column
+                label="是否启用"
+                align="center">
+                </el-table-column>
+                <el-table-column
+                label="最近登录时间"
+                align="center">
+                </el-table-column>
+                <el-table-column
+                label="操作"
+                align="center">
+                </el-table-column>
+            </el-table>
         </div>
     </div>
 </template>
 <script>
 export default {
-    
+    data(){
+        return{
+            value: ""
+        }
+    }
 }
 </script>
