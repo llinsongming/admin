@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import HomeView from '@/page/HomeView'
 import LoginView from '@/page/LoginView'
 import AdminUser from '@/components/adminuser/AdminUser'
+import RoleList from '@/components/adminuser/RoleList'
 
 Vue.use(Router)
 
@@ -19,10 +20,14 @@ const router =  new Router({
       component: HomeView,
       children: [
         {
-          path: '/home',
+          path: 'home',
           component: AdminUser,
           name: 'home'
         },
+        {
+          path: 'home/roleList',
+          component: RoleList
+        }
       ]
     }
   ]

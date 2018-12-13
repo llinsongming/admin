@@ -14,7 +14,7 @@
                                 {{item.name}}
                             </template>
                             <el-menu-item-group>
-                                <el-menu-item v-for="child in item.children" :key="child.id">{{child.name}}</el-menu-item>
+                                <el-menu-item v-for="child in item.children" :index="child.url" @click="changeHerf(child.url)" :key="child.id">{{child.name}}</el-menu-item>
                             </el-menu-item-group>
                         </el-submenu>
                     </el-menu>
@@ -48,8 +48,15 @@ export default {
             })
         },
         handleOpen(key, keyPath) {
-            this.$router.push(key)
+            if(key.indexOf("/") === 0 ){
+                this.$router.push(key)
+            }else{
+                return false;
+            }
         },
+        changeHerf(url){
+            this.$router.push(url)
+        }
     }
 }
 </script>

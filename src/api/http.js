@@ -27,7 +27,7 @@ export default {
                 method: 'get',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
-                    "auth": window.localStorage.getItem('access_token'),
+                    "auth": JSON.parse(window.localStorage.getItem('access_token'))[0],
 				},
 				transformRequest: [function (data) {
 					let ret = ''
@@ -36,9 +36,9 @@ export default {
 					}
                     return ret
 				}],
-            }).then((res) => {
+            }).then((res) => {console.log(res)
                 endLoading()//loading结束
-                if(!res.data.status && res.data.message == 'unauth'){console.log(12312312)
+                if(!res.data.status && res.data.message == 'unauth'){
                     router.push({name: 'LoginView'});
                 } else {
                     resolve(res.data);
@@ -57,7 +57,7 @@ export default {
 				data: _params,
 				headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
-                    "auth": window.localStorage.getItem('access_token'),
+                    "auth": JSON.parse(window.localStorage.getItem('access_token')),
 				},
 				transformRequest: [function (data) {
 					let ret = ''
@@ -66,10 +66,10 @@ export default {
 					}
                     return ret
 				}],
-            }).then(res => {
+            }).then(res => {console.log(res)
                 // endLoading()//loading结束
                 if(!res.data.status && res.data.message == 'unauth'){
-                    router.push({name: 'login'});
+                    router.push({name: 'LoginView'});
                 } else {
                     resolve(res.data);
                 }

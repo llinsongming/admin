@@ -27,8 +27,9 @@ export default {
             let that = this;
             that.$axios.post('/login',{username:that.input1,password:that.input2}).then(function(res){console.log(res)
                 if(res.status){
-                    window.localStorage.setItem('access_token',res.data);
-                    that.$router.push({name:'home',params:{username:that.input1}})
+                    let arr = [res.data,res.message]
+                    window.localStorage.setItem('access_token',JSON.stringify(arr));
+                    that.$router.push({name:'HomeView',params:{username:that.input1}})
                 }else{
                     that.$message.error('账号或密码错误');
                 }

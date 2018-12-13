@@ -10,7 +10,7 @@
         </div>
         <div class="exit fr">
             {{name}}
-            <el-button type="text">退出</el-button>
+            <el-button type="text" @click="exit">退出</el-button>
         </div>
     </div>
 </template>
@@ -18,11 +18,17 @@
 export default {
     data(){
         return{
-            name:'121'
+            name:''
         }
     },
     mounted(){
-        this.name = this.$route.username
+        this.name = JSON.parse(window.localStorage.getItem('access_token'))[1]
+    },
+    methods:{
+        exit(){
+            this.$router.push('/login');
+            window.localStorage.removeItem('access_token')
+        }
     }
 }
 </script>
@@ -52,6 +58,7 @@ export default {
             display: block;
         }
         .exit{
+            color: #fff;
             .el-button--text{
                 color: #fff;
                 &:hover{
