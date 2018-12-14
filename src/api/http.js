@@ -36,7 +36,7 @@ export default {
 					}
                     return ret
 				}],
-            }).then((res) => {console.log(res)
+            }).then((res) => {
                 endLoading()//loading结束
                 if(!res.data.status && res.data.message == 'unauth'){
                     router.push({name: 'LoginView'});
@@ -66,7 +66,7 @@ export default {
 					}
                     return ret
 				}],
-            }).then(res => {console.log(res)
+            }).then(res => {
                 // endLoading()//loading结束
                 if(!res.data.status && res.data.message == 'unauth'){
                     router.push({name: 'LoginView'});

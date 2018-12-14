@@ -43,7 +43,7 @@ export default {
     methods: {
         meuns(){
             let that = this;
-            that.$axios.get('/menus').then(function(res){console.log(res)
+            that.$axios.get('/menus').then(function(res){
                 that.nav = res.data[0].data;
             })
         },
@@ -53,6 +53,9 @@ export default {
             }else{
                 return false;
             }
+        },
+        handleClose(key, keyPath) {
+            console.log(key, keyPath);
         },
         changeHerf(url){
             this.$router.push(url)

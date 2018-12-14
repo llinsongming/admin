@@ -58,7 +58,7 @@
             </div>
         </div>
         <!-- 创建角色弹窗 --> 
-        <el-dialog title="创建角色" :visible.sync="createAccount" center width="40%">
+        <el-dialog title="创建角色" :visible.sync="createAccount" center width="40%" :before-close="roleClose">
             <el-form :model="creatForm" size="small"  status-icon :rules="rules2" ref="ruleForm2" label-width="70px" class="demo-ruleForm">
                 <el-form-item label="角色名称">
                     <el-input type="text" v-model="creatForm.roleName" autocomplete="off"></el-input>
@@ -114,13 +114,16 @@ export default {
         },
         toolsTree(){
             that = this;
-            that.$axios.get('/menus').then(function(res){console.log(12312312)
+            that.$axios.get('/menus').then(function(res){
                 that.toolsTree = res.data[0].data;
             })
+        },
+        roleClose(done){
+            done();
         }
     },
     mounted(){
-        toolsTree()
+        this.toolsTree()
     }
 }
 </script>
