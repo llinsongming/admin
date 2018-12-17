@@ -147,7 +147,7 @@ export default {
     methods: {
         tableList(){
             let that = this;
-            that.$axios.get('/adminUser').then((res)=>{console.log(res)
+            that.$axios.get('/adminUser').then((res)=>{
                 that.tableListData = res.data[0].data;
                 that.pageSize = res.data[0].page.pageSize;
                 that.total = res.data[0].page.totalRows;

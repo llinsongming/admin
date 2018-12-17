@@ -64,6 +64,9 @@ a,a:hover,a:focus{
 .ml20{
     margin-left: 20px;
 }
+.mb20{
+    margin-bottom: 20px;
+}
 .blue{
     color: #20a0ff;
 }
@@ -76,10 +79,29 @@ a,a:hover,a:focus{
         color: #1f2d3d;
     }
 }
-
-
-
-
+.img-size{
+    max-width: 50px;
+    height: 60px;
+    display: block;
+    cursor: pointer;
+    margin: 0 auto;
+}
+.table-list{
+    margin-bottom: 20px;
+}
+.el-main{
+    position: relative;
+    &::before{
+        position: absolute;
+        display: block;
+        content: '';
+        width: 4px;
+        height: 30px;
+        left: 0;
+        top: 15px;
+        background: #20a0ff;
+    }
+}
 
 
 

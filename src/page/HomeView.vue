@@ -4,12 +4,13 @@
             <Header></Header>
             <el-aside width="200px">
                 <el-col>
-                    <el-menu
+                     <el-menu
+                    unique-opened
                     default-active="2"
                     class="el-menu-vertical-demo"
                     @open="handleOpen"
                     @close="handleClose">
-                        <el-submenu v-for="item in nav" :index="item.url == '' ? String(item.id) : item.url" :key="item.id">
+                        <el-submenu v-for="item in nav" :index="item.url == '' ? String(item.id) : item.url" :key="item.id"  v-if="item.children.length > 1">
                             <template slot="title">
                                 {{item.name}}
                             </template>
@@ -17,6 +18,11 @@
                                 <el-menu-item v-for="child in item.children" :index="child.url" @click="changeHerf(child.url)" :key="child.id">{{child.name}}</el-menu-item>
                             </el-menu-item-group>
                         </el-submenu>
+                        <el-menu-item :index="item.url == '' ? String(item.id) : item.url" :key="item.id" @click="changeHerf(item.url)" v-else>
+                            <template slot="title">
+                                {{item.name}}
+                            </template>
+                        </el-menu-item>
                     </el-menu>
                 </el-col>
             </el-aside>
@@ -55,7 +61,7 @@ export default {
             }
         },
         handleClose(key, keyPath) {
-            console.log(key, keyPath);
+            // console.log(key, keyPath);
         },
         changeHerf(url){
             this.$router.push(url)
@@ -86,5 +92,23 @@ export default {
         padding: 15px;
         margin: 15px;
         background: #fff;
+    }
+    .el-menu-item{
+        height: 51px;
+        line-height: 51px;
+        &.is-active{
+            position: relative;
+            background: #e4e8f1;
+            &::before{
+                content: '';
+                display: block;
+                position: absolute;
+                left: 9px;
+                top: 16px;
+                width: 2px;
+                height: 16px;
+                background: #20a0ff;
+            }
+        }
     }
 </style>

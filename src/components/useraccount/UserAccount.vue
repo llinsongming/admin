@@ -21,7 +21,7 @@
         </div>
         <div class="table-list">
             <el-table
-                :data="tableListData"
+                :data="userListData"
                 border
                 style="width: 100%"
                 >
@@ -34,6 +34,10 @@
                 prop=""
                 label="头像"
                 align="center">
+                    <template slot-scope="scope">
+                        <!-- <img class="img-size" :src="scope.row.avatar" alt=""> -->
+                        <img class="img-size" src="" alt="">
+                    </template>
                 </el-table-column>
                 <el-table-column
                 prop="mobilePhone"
@@ -41,7 +45,7 @@
                 align="center">
                 </el-table-column>
                 <el-table-column
-                prop=""
+                prop="name"
                 label="用户昵称"
                 align="center">
                 </el-table-column>
@@ -59,6 +63,9 @@
                 prop=""
                 label="创建时间"
                 align="center">
+                    <span slot-scope="scope">
+                        {{compileDate(scope.row.registerTime)}}
+                    </span>
                 </el-table-column>
                 <el-table-column
                 label="最近登录时间"
@@ -82,19 +89,22 @@
             :page-size="pageSize"
             background
             layout="prev, pager, next,total"
-            :total="total">
+            :total="total"
+            :pager-count="5">
             </el-pagination>
         </div>
     </div>
 </template>
 <script>
 import {dateFor} from '../../api/utils'
+import axios from 'axios'
 export default {
     data(){
         return{
             total: 0,
             pageSize: 15,
-            tableListData:[],
+            page: 1,
+            userListData:[],
             //搜索
             query: {
                 keyword: '',
@@ -103,21 +113,27 @@ export default {
         }
     },
     methods: {
+        userTableListData(){
+            var that = this;
+            that.$axios.post('/user',{page:that.page,pageSize:that.pageSize}).then((res)=>{
+                console.log(res)
+                that.userListData = res.data.items;
+                that.total = res.data.itemsTotle;
+            });
+            
+        },
         /* 转义日期 */
         compileDate(time){
             return dateFor.dateFormat(time)
         }
     },
     mounted(){
-        
+        this.userTableListData()
     }
 }
 </script>
 <style lang="less" scoped>
 .el-pagination{
     text-align: center;
-}
-.el-table th>.cell{
-    color: red;
 }
 </style>

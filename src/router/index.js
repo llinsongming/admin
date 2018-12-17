@@ -5,6 +5,7 @@ import LoginView from '@/page/LoginView'
 import AdminUser from '@/components/adminuser/AdminUser'
 import RoleList from '@/components/adminuser/RoleList'
 import UserAccount from '@/components/useraccount/UserAccount'
+import Advertise from '@/components/ad/Advertise'
 
 Vue.use(Router)
 
@@ -19,6 +20,7 @@ const router =  new Router({
       path: '/',
       name: 'HomeView',
       component: HomeView,
+      redirect: '/login',
       children: [
         {
           path: 'home',
@@ -32,6 +34,10 @@ const router =  new Router({
         {
           path: 'user',
           component: UserAccount
+        },
+        {
+          path: 'ad/advertise',
+          component: Advertise
         }
       ]
     }

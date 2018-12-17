@@ -57,7 +57,38 @@ export default {
 				data: _params,
 				headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
-                    "auth": JSON.parse(window.localStorage.getItem('access_token')),
+                    "auth": JSON.parse(window.localStorage.getItem('access_token'))[0],
+				},
+				transformRequest: [function (data) {
+					let ret = ''
+					for (let it in data) {
+					  ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+					}
+                    return ret
+				}],
+            }).then(res => {
+                // endLoading()//loading结束
+                if(!res.data.status && res.data.message == 'unauth'){
+                    router.push({name: 'LoginView'});
+                } else {
+                    resolve(res.data);
+                }
+            }).catch(error => {
+
+            	reject(error)
+            })
+        })
+    },
+    loginPost(_url, _params = {}){
+        return new Promise((resolve, reject) => {
+            // startLoading()//loading开始
+            axios({
+				url: baseUrl + _url,
+				method: 'post',
+				data: _params,
+				headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    // "auth": JSON.parse(window.localStorage.getItem('access_token')),
 				},
 				transformRequest: [function (data) {
 					let ret = ''

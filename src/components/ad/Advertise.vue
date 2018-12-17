@@ -1,0 +1,63 @@
+<template>
+    <div>
+        <h2 class="mb20">发布广告</h2>
+        <el-form ref="form" :rules="rules" :model="form" label-width="100px" class="demo-ruleForm">
+            <el-form-item label="广告标题:" prop="title">
+                <el-input v-model="form.title"></el-input>
+            </el-form-item>
+            <el-form-item label="广告链接:" prop="">
+                <el-input v-model="form.url"></el-input>
+            </el-form-item>
+            <el-form-item label="有效时间:" required>
+                <el-col :span="9">
+                    <el-form-item prop="date1">
+                        <el-date-picker type="date" placeholder="请选择开始时间" v-model="form.date1" style="width: 100%;"></el-date-picker>
+                    </el-form-item>
+                </el-col>
+                <el-col class="line" :span="1" style="text-align:center;">-</el-col>
+                <el-col :span="9">
+                    <el-form-item prop="date2">
+                        <el-date-picker type="date" placeholder="请选择结束时间" v-model="form.date2" style="width: 100%;"></el-date-picker>
+                    </el-form-item>
+                </el-col>
+            </el-form-item>
+        </el-form>
+    </div>
+</template>
+<script>
+export default {
+    data(){
+        return{
+            form: {
+                title: '',
+                url: '',
+                date1: '',
+                date2: '',
+            },
+            rules: {
+                title: [
+                    { required: true, message: '广告标题不能为空', trigger: 'blur' },
+                    { min: 3, max: 50, message: '长度在 3 到 50 个字符', trigger: 'blur' }
+                ],
+                date1: [
+                    { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
+                ],
+                date2: [
+                    { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
+                ],
+            }
+        }
+    },
+    methods: {
+        
+    },
+    mounted(){
+        
+    }
+}
+</script>
+<style lang="less" scoped>
+.el-form-item{
+    width: 100%;
+}
+</style>

@@ -25,7 +25,7 @@ export default {
     methods: {
         login(){
             let that = this;
-            that.$axios.post('/login',{username:that.input1,password:that.input2}).then(function(res){
+            that.$axios.loginPost('/login',{username:that.input1,password:that.input2}).then(function(res){
                 if(res.status){
                     let arr = [res.data,res.message]
                     window.localStorage.setItem('access_token',JSON.stringify(arr));
