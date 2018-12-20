@@ -1,7 +1,7 @@
 <template>
     <div class="login">
         <div class="login-box">
-            <h2>后台登录</h2>
+            <!-- <h2>后台登录</h2> -->
             <form action="">
                 <el-input placeholder="请输入手机号" v-model="input1" >
                     <template slot="prepend">手机号</template>
