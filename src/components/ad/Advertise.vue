@@ -34,6 +34,12 @@
                 <img width="100%" :src="dialogImageUrl" alt="">
                 </el-dialog>
             </el-form-item>
+            <el-form-item>
+                <div class="slider-btn">
+                    <el-slider v-model="value3" @change="sliderChange" :show-tooltip="false"></el-slider>
+                </div>
+                <div class="gray">右滑后，发布广告将会生效</div>
+            </el-form-item>
         </el-form>
     </div>
 </template>
@@ -63,7 +69,8 @@ export default {
             dialogVisible: false,
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
-            }
+            },
+            value3: 0,
         }
     },
     methods: {
@@ -73,6 +80,9 @@ export default {
         handlePictureCardPreview(file) {
             this.dialogImageUrl = file.url;
             this.dialogVisible = true;
+        },
+        formatTooltip(val) {
+            return val / 100;
         }
     },
     mounted(){

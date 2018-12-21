@@ -6,6 +6,10 @@ import AdminUser from '@/components/adminuser/AdminUser'
 import RoleList from '@/components/adminuser/RoleList'
 import UserAccount from '@/components/useraccount/UserAccount'
 import Advertise from '@/components/ad/Advertise'
+import AdvertisingList from '@/components/ad/AdvertisingList'
+import UserMsg from '@/components/usermsg/UserMsg'
+import NewsList from '@/components/news/NewsList'
+import CreateNews from '@/components/news/CreateNews'
 
 Vue.use(Router)
 
@@ -38,6 +42,22 @@ const router =  new Router({
         {
           path: 'ad/advertise',
           component: Advertise
+        },
+        {
+          path: 'ad/advertisingList',
+          component: AdvertisingList
+        },
+        {
+          path: 'userMsg',
+          component: UserMsg
+        },
+        {
+          path: 'news/newsList',
+          component: NewsList
+        },
+        {
+          path: 'news/createNews',
+          component: CreateNews
         }
       ]
     }
