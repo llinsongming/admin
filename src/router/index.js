@@ -10,6 +10,10 @@ import AdvertisingList from '@/components/ad/AdvertisingList'
 import UserMsg from '@/components/usermsg/UserMsg'
 import NewsList from '@/components/news/NewsList'
 import CreateNews from '@/components/news/CreateNews'
+import ArtList from '@/components/article/ArtList'
+import CreateArt from '@/components/article/CreateArt'
+import CreateChannel from '@/components/article/CreateChannel'
+import CourseList from '@/components/article/CourseList'
 
 Vue.use(Router)
 
@@ -58,6 +62,22 @@ const router =  new Router({
         {
           path: 'news/createNews',
           component: CreateNews
+        },
+        {
+          path: 'article/artList',
+          component: ArtList
+        },
+        {
+          path: 'article/createArt',
+          component: CreateArt
+        },
+        {
+          path: 'article/createChannel',
+          component: CreateChannel
+        },
+        {
+          path: 'article/courseList',
+          component: CourseList
         }
       ]
     }
