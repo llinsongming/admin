@@ -14,6 +14,12 @@ import ArtList from '@/components/article/ArtList'
 import CreateArt from '@/components/article/CreateArt'
 import CreateChannel from '@/components/article/CreateChannel'
 import CourseList from '@/components/article/CourseList'
+import DhyanaList from '@/components/dhyanalist/DhyanaList'
+import QaList from '@/components/qalist/QaList'
+import ActivityList from '@/components/activity/ActivityList'
+import CreateAct from '@/components/activity/CreateAct'
+import Examine from '@/components/examine/Examine'
+import Temples from '@/components/temple/Temples'
 
 Vue.use(Router)
 
@@ -78,6 +84,30 @@ const router =  new Router({
         {
           path: 'article/courseList',
           component: CourseList
+        },
+        {
+          path: 'dhyanaList',
+          component: DhyanaList
+        },
+        {
+          path: 'qaList',
+          component: QaList
+        },
+        {
+          path: 'activity/activityList',
+          component: ActivityList
+        },
+        {
+          path: 'activity/createAct',
+          component: CreateAct
+        },
+        {
+          path: 'examine',
+          component: Examine
+        },
+        {
+          path: 'temple/temples',
+          component: Temples
         }
       ]
     }
