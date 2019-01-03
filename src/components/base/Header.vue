@@ -6,6 +6,9 @@
                     <img src="../../assets/img/logo.png" alt="logo">
                     福报运营管理后台
                 </router-link>
+                <router-link to="/home" class="logon2">
+                    <img src="../../assets/img/logo.png" alt="logo">
+                </router-link>
             </h1>
         </div>
         <div class="exit fr">
@@ -49,7 +52,7 @@ export default {
             img{
                 display: inline-block;
                 vertical-align: middle;
-                padding: 0 20px;
+                padding: 0 70px 0 35px;
             }
             color: #fff;
             font-size: 18px;
@@ -65,6 +68,15 @@ export default {
                     text-decoration: underline;
                 }
             }
+        }
+        .logon2{
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-left: 20px;
+            height: 50px;
+            width: 160px;
+            background: #2996e9;
         }
     }
 </style>

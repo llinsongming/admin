@@ -132,6 +132,23 @@ a,a:hover,a:focus{
         border: none;
     }
 }
+#app .el-aside{
+    position: fixed;
+    left: 0;
+    top: 50px;
+    background: #fff;
+    height: 100%;
+    >div{
+        overflow-y: scroll;
+        height: 100%;
+    }
+    >div::-webkit-scrollbar{
+        display: none;
+    }
+}
+#app .el-main{
+    margin-left: 170px;
+}
 //广告上传图片
 .slider-btn{
     width: 300px;

@@ -2,7 +2,7 @@
     <div>
         <el-container>
             <Header></Header>
-            <el-aside width="200px">
+            <el-aside width="160px">
                 <el-col>
                      <el-menu
                     unique-opened
@@ -10,7 +10,7 @@
                     class="el-menu-vertical-demo"
                     @open="handleOpen"
                     @close="handleClose">
-                        <el-submenu v-for="item in nav" :index="item.url == '' ? String(item.id) : item.url" :key="item.id"  v-if="item.children.length > 1">
+                        <el-submenu v-for="item in nav" :index="item.url == '' ? String(item.id) : item.url" :key="item.id"  v-if="item.children.length > 0">
                             <template slot="title">
                                 {{item.name}}
                             </template>
@@ -49,7 +49,7 @@ export default {
     methods: {
         meuns(){
             let that = this;
-            that.$axios.get('/menus').then(function(res){console.log(res.data)
+            that.$axios.get('/menus').then(function(res){
                 that.nav = res.data;
             })
         },
@@ -93,9 +93,9 @@ export default {
         margin: 15px;
         background: #fff;
     }
-    .el-menu-item{
-        height: 51px;
-        line-height: 51px;
+    .el-menu-vertical-demo .el-menu-item{
+        height: 46px;
+        line-height: 46px;
         &.is-active{
             position: relative;
             background: #e4e8f1;
@@ -110,5 +110,13 @@ export default {
                 background: #20a0ff;
             }
         }
+    }
+    .el-submenu__title{
+        height: 46px;
+        line-height: 46px;
+    }
+    .el-submenu .el-menu-item{
+        height: 46px;
+        line-height: 46px;
     }
 </style>

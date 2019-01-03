@@ -28,6 +28,7 @@ import Withdrawals from '@/components/withdrawals/Withdrawals'
 import PushList from '@/components/push/PushList'
 import ReleasePush from '@/components/push/ReleasePush'
 import CreateMenu from '@/components/meuns/CreateMenu'
+import AllComments from '@/components/comment/AllComments'
 
 Vue.use(Router)
 
@@ -146,8 +147,12 @@ const router =  new Router({
           component: ReleasePush
         },
         {
-          path: 'home/createMenu',
+          path: 'menus',
           component: CreateMenu
+        },
+        {
+          path: 'comment/allComments',
+          component: AllComments
         }
       ]
     }
