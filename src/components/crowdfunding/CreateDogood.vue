@@ -1,12 +1,26 @@
-    <template>
+<template>
     <div>
-        <h2 class="mb20">新建活动</h2>
+        <h2 class="mb20">随喜乐捐</h2>
         <el-form ref="form" :rules="rules" :model="form" label-width="100px" class="demo-ruleForm">
-            <el-form-item label="活动标题:" prop="title">
+            <el-form-item  label="活动类型:" prop="">
+                <el-select v-model="form.source.default" placeholder="请选择" >
+                    <el-option label="随喜乐捐" value="1"></el-option>
+                    <el-option label="祈福烧香" value="2"></el-option>
+                    <el-option label="日行一善" value="3"></el-option>
+                    <el-option label="供光明灯" value="4"></el-option>
+                    <el-option label="积福放生" value="5"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="标题:" prop="title">
                 <el-input v-model="form.title"></el-input>
             </el-form-item>
-            <el-form-item label="报名链接:" prop="url">
-                <el-input v-model="form.url"></el-input>
+            <el-form-item label="乐捐金额:" prop="money">
+                <el-input v-model="form.money"></el-input>
+            </el-form-item>
+            <el-form-item  label="接受机构:" prop="">
+                <el-select v-model="form.default" placeholder="请选择" >
+                    
+                </el-select>
             </el-form-item>
             <el-form-item label="列表图:" >
                 <el-upload
@@ -24,8 +38,16 @@
             <el-form-item label="排序权重:" prop="priority">
                 <el-input v-model="form.priority"></el-input>
             </el-form-item>
-            <el-form-item label="文章内容:" prop="newsContent">
-                <el-input v-model="form.title"></el-input>
+            <el-form-item label="活动详情:">
+                <el-input v-model="form.word"></el-input>
+            </el-form-item>
+            <el-form-item label="使用说明:" prop="describe">
+                <el-input
+                type="textarea"
+                :rows="2"
+                placeholder="请输入内容"
+                v-model="form.describe">
+                </el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" class="btn-primary">保存</el-button>
@@ -41,27 +63,36 @@ export default {
         return{
             form: {
                 title: '',
-                url: '',
+                money: 0,
+                word: '',
                 default: '',
                 source: {
                     keyword: '',
+                    default: '1'
+                },
+                channel: {
+                    keyword: '',
                     default: ''
                 },
-                priority: 0
+                priority: 0,
+                describe: ''
             },
             rules: {
                 title: [
                     { required: true, message: '标题不能为空', trigger: 'blur' },
                     { min: 3, max: 50, message: '长度在 3 到 50 个字符', trigger: 'blur' }
                 ],
-                newsContent: [
-                    { required: true, message: '新闻内容不能为空', trigger: 'blur' },
-                    { min: 3, max: 50, message: '长度在 3 到 50 个字符', trigger: 'blur' }
+                money: [
+                    { required: true, message: '乐捐金额不能为空', trigger: 'blur' }
                 ],
                 priority: [
                     { required: true, message: '权重不能为空', trigger: 'blur' },
                     { min: 1, max: 2, message: '权重在 1 到 99', trigger: 'blur' }
-                ]
+                ],
+                describe: [
+                    { required: true, message: '使用说明不能为空', trigger: 'blur' },
+                    { min: 3, max: 50, message: '使用说明在 3 到 50 个字符', trigger: 'blur' }
+                ],
             },
             dialogImageUrl: '',
             dialogVisible: false,
@@ -89,13 +120,13 @@ export default {
             this.inputVisible = false;
             this.inputValue = '';
         },
-        handleRemove(file, fileList) {
-            console.log(file, fileList);
-        },
         handlePictureCardPreview(file) {
             this.dialogImageUrl = file.url;
             this.dialogVisible = true;
-        }
+        },
+        handleRemove(file, fileList) {
+            
+        },
     },
     mounted(){
         

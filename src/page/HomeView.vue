@@ -49,8 +49,8 @@ export default {
     methods: {
         meuns(){
             let that = this;
-            that.$axios.get('/menus').then(function(res){
-                that.nav = res.data[0].data;
+            that.$axios.get('/menus').then(function(res){console.log(res.data)
+                that.nav = res.data;
             })
         },
         handleOpen(key, keyPath) {

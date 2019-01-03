@@ -20,6 +20,14 @@ import ActivityList from '@/components/activity/ActivityList'
 import CreateAct from '@/components/activity/CreateAct'
 import Examine from '@/components/examine/Examine'
 import Temples from '@/components/temple/Temples'
+import CreateTemple from '@/components/temple/CreateTemple'
+import CroList from '@/components/crowdfunding/CroList'
+import CreateDogood from '@/components/crowdfunding/CreateDogood'
+import Order from '@/components/order/Order'
+import Withdrawals from '@/components/withdrawals/Withdrawals'
+import PushList from '@/components/push/PushList'
+import ReleasePush from '@/components/push/ReleasePush'
+import CreateMenu from '@/components/meuns/CreateMenu'
 
 Vue.use(Router)
 
@@ -108,6 +116,38 @@ const router =  new Router({
         {
           path: 'temple/temples',
           component: Temples
+        },
+        {
+          path: 'temple/createTemple',
+          component: CreateTemple
+        },
+        {
+          path: 'crowdfunding/croList',
+          component: CroList
+        },
+        {
+          path: 'crowdfunding/CreateDogood',
+          component: CreateDogood
+        },
+        {
+          path: 'order',
+          component: Order
+        },
+        {
+          path: 'withdrawals',
+          component: Withdrawals
+        },
+        {
+          path: 'push/pushList',
+          component: PushList
+        },
+        {
+          path: 'push/releasePush',
+          component: ReleasePush
+        },
+        {
+          path: 'home/createMenu',
+          component: CreateMenu
         }
       ]
     }

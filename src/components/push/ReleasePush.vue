@@ -1,43 +1,44 @@
 <template>
     <div>
-        <h2 class="mb20">创建文章</h2>
+        <h2 class="mb20">发布推送</h2>
         <el-form ref="form" :rules="rules" :model="form" label-width="100px" class="demo-ruleForm">
             <el-form-item label="新闻标题:" prop="title">
-                <el-input v-model="form.title"></el-input>
+                <el-input type="textarea" :autosize="{ minRows: 6, maxRows: 10}" v-model="form.title"></el-input>
             </el-form-item>
-            <el-form-item  label="频道类型:" prop="">
+            <el-form-item  label="推荐跳转:" prop="">
                 <el-select v-model="form.default" placeholder="请选择" >
+                    <el-option label="应用内-新闻详情" value="1"></el-option>
+                    <el-option label="应用内-禅说详情" value="2"></el-option>
+                    <el-option label="应用内-学堂文章" value="3"></el-option>
+                    <el-option label="应用内-活动" value="4"></el-option>
+                    <el-option label="应用内-禅师个人主页" value="5"></el-option>
                 </el-select>
             </el-form-item>
-             <el-form-item  label="文章类型:" prop="">
+             <el-form-item  label="推荐类型:" prop="">
                 <el-select v-model="form.source.default" placeholder="请选择" >
-                    <el-option label="图文" value="1"></el-option>
-                    <el-option label="音频" value="2"></el-option>
-                    <el-option label="视频" value="3"></el-option>
+                    <el-option label="全部用户" value="1"></el-option>
+                    <el-option label="禅师" value="2"></el-option>
+                    <el-option label="信众" value="3"></el-option>
+                    <el-option label="指定用户" value="4"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="列表图:" >
-                <el-upload
-                action="https://jsonplaceholder.typicode.com/posts/"
-                list-type="picture-card"
-                :on-preview="handlePictureCardPreview"
-                :on-remove="handleRemove">
-                <i class="el-icon-plus"></i>
-                </el-upload>
-                <el-dialog :visible.sync="dialogVisible">
-                <img width="100%" :src="dialogImageUrl" alt="">
-                </el-dialog>
-                <span class="gray">只能上传一张图片</span>
-            </el-form-item>
-            <el-form-item label="排序权重:" prop="priority">
+            <el-form-item label="ID:" prop="priority">
                 <el-input v-model="form.priority"></el-input>
             </el-form-item>
-            <el-form-item label="新闻内容:" prop="newsContent">
-                <el-input v-model="form.title"></el-input>
+            <el-form-item label="新闻内容:" prop="">
+                <el-date-picker
+                v-model="form.date"
+                type="date"
+                placeholder="选择日期"
+                class="w200">
+                </el-date-picker>
+                <span style="color: #95b3be;margin-left: 10px;">！推送时间不选择表示立即推送</span>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" class="btn-primary">保存</el-button>
-                <el-button type="primary" class="btn-default">预览</el-button>
+                <div class="slider-btn">
+                    <el-slider v-model="value3" :show-tooltip="false"></el-slider>
+                </div>
+                <div class="gray">右滑后，推送消息将会生效</div>
             </el-form-item>
         </el-form>
     </div>
@@ -55,20 +56,17 @@ export default {
                     keyword: '',
                     default: ''
                 },
-                priority: 0
+                priority: '',
+                date: ''
             },
             rules: {
                 title: [
                     { required: true, message: '新闻标题不能为空', trigger: 'blur' },
                     { min: 3, max: 50, message: '长度在 3 到 50 个字符', trigger: 'blur' }
                 ],
-                newsContent: [
-                    { required: true, message: '新闻内容不能为空', trigger: 'blur' },
-                    { min: 3, max: 50, message: '长度在 3 到 50 个字符', trigger: 'blur' }
-                ],
                 priority: [
-                    { required: true, message: '权重不能为空', trigger: 'blur' },
-                    { min: 1, max: 2, message: '权重在 1 到 99', trigger: 'blur' }
+                    { required: true, message: 'ID不能为空', trigger: 'blur' },
+                    { min: 1, max: 4, message: 'ID在 1 到 4 个字符', trigger: 'blur' }
                 ]
             },
             dialogImageUrl: '',
@@ -97,13 +95,6 @@ export default {
             this.inputVisible = false;
             this.inputValue = '';
         },
-        handlePictureCardPreview(file) {
-            this.dialogImageUrl = file.url;
-            this.dialogVisible = true;
-        },
-        handleRemove(file, fileList) {
-            
-        },
     },
     mounted(){
         
@@ -131,5 +122,8 @@ export default {
   }
   .button-new-tag{
       margin-left: 0;
+  }
+  .w200{
+      width: 200px;
   }
 </style>

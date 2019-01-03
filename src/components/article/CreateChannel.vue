@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="clearfix user">
-        <el-form :model="query">
+        <el-form>
             <div class="fl">
                 <div class="title">创建频道</div>
             </div>

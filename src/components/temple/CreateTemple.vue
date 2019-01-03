@@ -8,7 +8,6 @@
             <el-form-item label="寺院头像:" >
                 <el-upload
                 action="https://jsonplaceholder.typicode.com/posts/"
-                :headers="headers"
                 list-type="picture-card"
                 :on-preview="handlePictureCardPreview"
                 :on-remove="handleRemove">
@@ -22,22 +21,26 @@
             <el-form-item label="寺院头像:" >
                 <el-upload
                 action="https://jsonplaceholder.typicode.com/posts/"
-                :headers="headers"
                 list-type="picture-card"
-                :on-preview="handlePictureCardPreview"
-                :on-remove="handleRemove">
+                :on-preview="handlePictureCardPreview2"
+                :on-remove="handleRemove2">
                 <i class="el-icon-plus"></i>
                 </el-upload>
-                <el-dialog :visible.sync="dialogVisible">
-                <img width="100%" :src="dialogImageUrl" alt="">
+                <el-dialog :visible.sync="dialogVisible2">
+                <img width="100%" :src="dialogImageUrl2" alt="">
                 </el-dialog>
                 <span class="gray">上传多张张图片</span>
             </el-form-item>
-            <el-form-item label="寺院名称:" prop="describe">
-                <el-input v-model="form.describe"></el-input>
+            <el-form-item label="寺院简介:" prop="describe">
+                <el-input
+                type="textarea"
+                :rows="2"
+                placeholder="请输入内容"
+                v-model="form.describe">
+                </el-input>
             </el-form-item>
             <el-form-item label="文章内容:" prop="newsContent">
-                <el-input v-model="form.title"></el-input>
+                <el-input v-model="form.title2"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" class="btn-primary">保存</el-button>
@@ -53,6 +56,7 @@ export default {
         return{
             form: {
                 title: '',
+                title2: '',
                 describe: '',
                 default: '',
                 source: {
@@ -67,8 +71,8 @@ export default {
                     { min: 3, max: 50, message: '长度在 3 到 50 个字符', trigger: 'blur' }
                 ],
                 describe: [
-                    { required: true, message: '新闻内容不能为空', trigger: 'blur' },
-                    { min: 3, max: 50, message: '长度在 3 到 50 个字符', trigger: 'blur' }
+                    { required: true, message: '内容不能为空', trigger: 'blur' },
+                    { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
                 ],
                 priority: [
                     { required: true, message: '权重不能为空', trigger: 'blur' },
@@ -76,7 +80,9 @@ export default {
                 ]
             },
             dialogImageUrl: '',
+            dialogImageUrl2: '',
             dialogVisible: false,
+            dialogVisible2: false,
             value3: 0,
             dynamicTags: [],
             inputVisible: false,
@@ -100,6 +106,20 @@ export default {
             }
             this.inputVisible = false;
             this.inputValue = '';
+        },
+        handleRemove(file, fileList) {
+            
+        },
+        handleRemove2(file, fileList) {
+            
+        },
+        handlePictureCardPreview(file) {
+            this.dialogImageUrl = file.url;
+            this.dialogVisible = true;
+        },
+        handlePictureCardPreview2(file) {
+            this.dialogImageUrl = file.url;
+            this.dialogVisible = true;
         }
     },
     mounted(){

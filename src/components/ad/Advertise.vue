@@ -36,7 +36,7 @@
             </el-form-item>
             <el-form-item>
                 <div class="slider-btn">
-                    <el-slider v-model="value3" @change="sliderChange" :show-tooltip="false"></el-slider>
+                    <el-slider v-model="value3" :show-tooltip="false"></el-slider>
                 </div>
                 <div class="gray">右滑后，发布广告将会生效</div>
             </el-form-item>
