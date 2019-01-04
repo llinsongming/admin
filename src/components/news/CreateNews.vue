@@ -33,7 +33,6 @@
     </div>
 </template>
 <script>
-// const UE = require('ueditor')
 export default {
     data(){
         return{
@@ -76,6 +75,15 @@ export default {
             }
             this.inputVisible = false;
             this.inputValue = '';
+        },
+        getUEContent() {
+            let content = this.$refs.ue.getUEContent();
+            this.$notify({
+            title: '获取成功，可在控制台查看！',
+            message: content,
+            type: 'success'
+            });
+            console.log(content)
         }
     },
     mounted(){

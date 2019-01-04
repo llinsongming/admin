@@ -93,18 +93,18 @@
         </div>
         <!-- 创建账户弹窗 --> 
         <el-dialog title="创建账号" :visible.sync="createAccount" width="25%" center :before-close="userClose">
-            <el-form :model="creatForm" size="small"  status-icon ref="ruleForm2" label-width="70px" class="demo-ruleForm">
-                <el-form-item label="手机号">
-                    <el-input type="text" v-model="creatForm.phone" autocomplete="off" placeholder="输入手机号"></el-input>
+            <el-form :model="createForm" size="small" :rules="rules" status-icon ref="createForm" label-width="70px" class="demo-ruleForm create-form">
+                <el-form-item label="手机号" prop="checkPhone">
+                    <el-input type="text" v-model="createForm.checkPhone" autocomplete="off" placeholder="输入手机号"></el-input>
                 </el-form-item>
                 <el-form-item label="密码" prop="pass">
-                    <el-input type="password" v-model="creatForm.pass" autocomplete="off" placeholder="输入密码"></el-input>
+                    <el-input type="password" v-model="createForm.pass" autocomplete="off" placeholder="输入密码"></el-input>
                 </el-form-item>
                 <el-form-item label="确认密码" prop="checkPass">
-                    <el-input type="password" v-model="creatForm.checkPass" autocomplete="off" placeholder="再次确认密码"></el-input>
+                    <el-input type="password" v-model="createForm.checkPass" autocomplete="off" placeholder="再次确认密码"></el-input>
                 </el-form-item>
-                <el-form-item label="名称">
-                    <el-input v-model.number="creatForm.username" placeholder="请输入使用人名称"></el-input>
+                <el-form-item label="名称" prop="username">
+                    <el-input v-model.number="createForm.username" placeholder="请输入使用人名称"></el-input>
                 </el-form-item>
                 <el-form-item label="角色配置">
                     <el-select class="w94" v-model="createAccountValue" placeholder="请选择角色" size="small">
@@ -115,7 +115,7 @@
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button type="primary" size="small" @click="createAccount = false">保存</el-button>
+                <el-button type="primary" size="small" @click="submitForm('createForm')">保存</el-button>
             </div>
         </el-dialog>
     </div>
@@ -125,13 +125,65 @@ import {dateFor} from '../../api/utils'
 export default {
     name:'adminUser',
     data(){
+        //手机验证
+        var checkPhone = (rule, value, callback) => {
+            if (!value) {
+            return callback(new Error('手机号不能为空'));
+            } else {
+            const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
+            console.log(reg.test(value));
+            if (reg.test(value)) {
+                callback();
+            } else {
+                return callback(new Error('请输入正确的手机号'));
+            }
+            }
+        };
+        //密码验证
+        var pass = (rule, value, callback) => {
+            if (!value) {
+            return callback(new Error('密码不能为空'));
+            } else {
+            const reg = /^[a-zA-Z]\w{5,17}$/
+            console.log(reg.test(value));
+            if (reg.test(value)) {
+                callback();
+            } else {
+                return callback(new Error('请输入长度在6~18之间,只能包含字母、数字和下划线的密码'));
+            }
+            }
+        };
+        //密码二次验证
+        let checkPass = (rule, value, callback) => {
+            if (value === '') {
+                callback(new Error('请再次输入密码'))
+            } else if (value !== this.createForm.pass) {
+                callback(new Error('两次输入密码不一致!'))
+            } else {
+                callback()
+            }
+        };
+        //用户名验证
+        var username = (rule, value, callback) => {
+            if (!value) {
+            return callback(new Error('密码不能为空'));
+            } else {
+            const reg = /^.{2,20}$/
+            console.log(reg.test(value));
+            if (reg.test(value)) {
+                callback();
+            } else {
+                return callback(new Error('长度在 2 到 5 个字符'));
+            }
+            }
+        };
         return{
             total: 0,
             createAccount: false,
             createAccountValue: '',
             pageSize: 15,
-            creatForm: {
-                phone: '',
+            createForm: {
+                checkPhone: '',
                 pass: '',
                 username:'',
                 checkPass:''
@@ -141,6 +193,21 @@ export default {
             query: {
                 keyword: '',
                 default: '1'
+            },
+            //正则
+            rules: {
+                checkPhone: [
+                    {validator: checkPhone, trigger: 'blur'}
+                ],
+                pass: [
+                    {validator: pass, trigger: 'blur'}
+                ],
+                checkPass: [
+                    {validator: checkPass, trigger: 'blur'}
+                ],
+                username: [
+                    {validator: username, trigger: 'blur'}
+                ]
             }
         }
     },
@@ -159,6 +226,16 @@ export default {
         /* 转义日期 */
         compileDate(time){
             return dateFor.dateFormat(time)
+        },
+        submitForm(formName){
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    alert('submit!');
+                } else {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
         }
     },
     mounted(){
@@ -174,10 +251,13 @@ export default {
     text-align: left;
 }
 .el-form-item--small.el-form-item{
-    margin-bottom: 10px;
+    margin-bottom: 30px;
 }
 .el-dialog--center .el-dialog__body{
     padding: 5px 25px;
+}
+.create-form .el-form-item{
+    width: 100%;
 }
 .el-form-item__content{
     width: 100%;

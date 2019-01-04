@@ -116,7 +116,6 @@ export default {
         userTableListData(){
             var that = this;
             that.$axios.post('/user',{page:that.page,pageSize:that.pageSize}).then((res)=>{
-                console.log(res)
                 that.userListData = res.data.items;
                 that.total = res.data.itemsTotle;
             });
