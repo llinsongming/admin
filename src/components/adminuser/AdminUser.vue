@@ -228,9 +228,13 @@ export default {
             return dateFor.dateFormat(time)
         },
         submitForm(formName){
-            this.$refs[formName].validate((valid) => {
+            let that = this;
+            let obj = JSON.stringify(this.createForm);
+            that.$refs[formName].validate((valid) => {
                 if (valid) {
-                    alert('submit!');
+                    that.$axios.post('/createUser',{formData:obj,createAccountValue:that.createAccountValue}).then(function(res){
+                        console.log(res)
+                    })
                 } else {
                     console.log('error submit!!');
                     return false;
