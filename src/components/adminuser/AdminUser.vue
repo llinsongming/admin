@@ -39,26 +39,32 @@
                 style="width: 100%"
                 >
                 <el-table-column
-                prop="userId"
+                prop="_id"
                 label="ID(内部)"
                 align="center">
                 </el-table-column>
                 <el-table-column
-                prop="mobilePhone"
+                prop="phone"
                 label="手机号"
                 align="center">
                 </el-table-column>
                 <el-table-column
-                prop="name"
+                prop="username"
                 label="使用人"
                 align="center">
                 </el-table-column>
                 <el-table-column
-                prop="signature"
+                prop="userRole"
                 label="后台角色"
                 align="center">
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.userRole == '1'">尊贵VIP</span>
+                        <span v-if="scope.row.userRole == '2'">普通管理</span>
+                        <span v-if="scope.row.userRole == '3'">普通用户</span>
+                    </template>
                 </el-table-column>
                 <el-table-column
+                 prop="state"
                 label="是否启用"
                 align="center">
                     <template slot-scope="scope">
@@ -85,6 +91,7 @@
         </div>
         <div class="page">
             <el-pagination
+            @current-change="handleCurrentChange"
             :page-size="pageSize"
             background
             layout="prev, pager, next,total"
@@ -93,7 +100,7 @@
         </div>
         <!-- 创建账户弹窗 --> 
         <el-dialog title="创建账号" :visible.sync="createAccount" width="25%" center :before-close="userClose">
-            <el-form :model="createForm" size="small" :rules="rules" status-icon ref="createForm" label-width="70px" class="demo-ruleForm create-form">
+            <el-form :model="createForm" size="small" :rules="rules" hide-required-asterisk status-icon ref="createForm" label-width="80px" class="demo-ruleForm create-form">
                 <el-form-item label="手机号" prop="checkPhone">
                     <el-input type="text" v-model="createForm.checkPhone" autocomplete="off" placeholder="输入手机号"></el-input>
                 </el-form-item>
@@ -104,10 +111,10 @@
                     <el-input type="password" v-model="createForm.checkPass" autocomplete="off" placeholder="再次确认密码"></el-input>
                 </el-form-item>
                 <el-form-item label="名称" prop="username">
-                    <el-input v-model.number="createForm.username" placeholder="请输入使用人名称"></el-input>
+                    <el-input type="text" v-model="createForm.username" placeholder="请输入使用人名称"></el-input>
                 </el-form-item>
-                <el-form-item label="角色配置">
-                    <el-select class="w94" v-model="createAccountValue" placeholder="请选择角色" size="small">
+                <el-form-item label="角色配置" prop="createUserRole">
+                    <el-select class="w100b" v-model="createForm.createUserRole" placeholder="请选择角色" size="small">
                         <el-option label="1 - 尊贵VIP" value="1"></el-option>
                         <el-option label="2 - 普通管理" value="2"></el-option>
                         <el-option label="3 - 普通用户" value="3"></el-option>
@@ -115,7 +122,7 @@
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button type="primary" size="small" @click="submitForm('createForm')">保存</el-button>
+                <el-button :plain="true" type="primary" size="small" @click="submitForm('createForm')">保存</el-button>
             </div>
         </el-dialog>
     </div>
@@ -128,15 +135,22 @@ export default {
         //手机验证
         var checkPhone = (rule, value, callback) => {
             if (!value) {
-            return callback(new Error('手机号不能为空'));
+                return callback(new Error('手机号不能为空'));
             } else {
-            const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
-            console.log(reg.test(value));
-            if (reg.test(value)) {
-                callback();
+                const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
+                console.log(reg.test(value));
+            if (reg.test(value)) {console.log(value)
+                this.$axios.post('/checkUser',{type:1,value:value}).then(function(res){
+                    console.log(res)
+                    if(res.status){
+                        return callback(new Error('手机号已存在'));
+                    } else{
+                        callback();
+                    }
+                })
             } else {
-                return callback(new Error('请输入正确的手机号'));
-            }
+                    return callback(new Error('请输入正确的手机号'));
+                }
             }
         };
         //密码验证
@@ -166,25 +180,33 @@ export default {
         //用户名验证
         var username = (rule, value, callback) => {
             if (!value) {
-            return callback(new Error('密码不能为空'));
+                return callback(new Error('用户名不能为空'));
             } else {
-            const reg = /^.{2,20}$/
-            console.log(reg.test(value));
+                const reg = /^.{2,20}$/
+                console.log(reg.test(value));
             if (reg.test(value)) {
-                callback();
+                this.$axios.post('/checkUser',{type:2,value:value}).then(function(res){
+                    console.log(res)
+                    if(res.status){
+                        return callback(new Error('用户名已存在'));
+                    } else{
+                        callback();
+                    }
+                })
             } else {
-                return callback(new Error('长度在 2 到 5 个字符'));
-            }
+                    return callback(new Error('长度在 2 到 5 个字符'));
+                }
             }
         };
         return{
             total: 0,
             createAccount: false,
-            createAccountValue: '',
-            pageSize: 15,
+            pageSize: 10,
+            pageIndex: 1,
             createForm: {
                 checkPhone: '',
                 pass: '',
+                createUserRole: '',
                 username:'',
                 checkPass:''
             },
@@ -207,17 +229,29 @@ export default {
                 ],
                 username: [
                     {validator: username, trigger: 'blur'}
-                ]
+                ],
+                createUserRole: [
+                    { required: true, message: '请选择活动区域', trigger: 'change' }
+                ],
             }
         }
     },
     methods: {
-        tableList(){
+        //切换分页
+        handleCurrentChange(val){
+            var that = this;
+            that.pageIndex = val;
+            that.tableList(that.pageSize,that.pageIndex);
+        },
+        tableList(pageSize,pageIndex){
             let that = this;
-            that.$axios.get('/adminUser').then((res)=>{
-                that.tableListData = res.data[0].data;
-                that.pageSize = res.data[0].page.pageSize;
-                that.total = res.data[0].page.totalRows;
+            that.$axios.post('/adminUser',{
+                pageSize: pageSize,
+                pageIndex: pageIndex,
+                count: 1
+            }).then((res)=>{
+                that.tableListData = res.data.items;
+                that.total = res.data.itemsTotle;
             })
         },
         userClose(done){
@@ -232,8 +266,18 @@ export default {
             let obj = JSON.stringify(this.createForm);
             that.$refs[formName].validate((valid) => {
                 if (valid) {
-                    that.$axios.post('/createUser',{formData:obj,createAccountValue:that.createAccountValue}).then(function(res){
-                        console.log(res)
+                    that.$axios.post('/createUser',{formData:obj}).then((res)=>{
+                        //创建成功提醒
+                        that.$message({
+                            title: '成功',
+                            message: '创建成功',
+                            type: 'success',
+                            center: true    
+                        });
+                        //关闭弹出
+                        that.createAccount = false;
+                        //重置弹窗
+                        that.$refs.createForm.resetFields();
                     })
                 } else {
                     console.log('error submit!!');
@@ -243,7 +287,7 @@ export default {
         }
     },
     mounted(){
-        this.tableList()
+        this.tableList(this.pageSize,this.pageIndex)
     }
 }
 </script>
@@ -269,5 +313,7 @@ export default {
 .w94{
     width: 94%;
 }
-
+.w100b{
+    width: 100%;
+}
 </style>
