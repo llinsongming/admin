@@ -2,7 +2,7 @@
     <div>
         <div class="clearfix user">
             <div class="fl">
-                <el-form :model="query">
+                <el-form :model="query" ref="query">
                     <el-form-item>
                         <el-select v-model="query.default" placeholder="请选择" size="small">
                             <el-option label="手机号码" value="1"></el-option>
@@ -11,10 +11,10 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item>
-                        <el-input placeholder="输入搜索内容" v-model="query.leyword" size="small"></el-input>
+                        <el-input placeholder="输入搜索内容" v-model="query.keyword" size="small"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" size="small">查询</el-button>
+                        <el-button type="primary" @click="queryForm" size="small">查询</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -83,7 +83,7 @@
                 label="操作"
                 align="center">
                     <template slot-scope="scope">
-                        <a href="javascript:" class="blue">编辑</a>
+                        <a href="javascript:" class="blue" @click="editorOpen(scope.row)">编辑</a>
                         <a href="javascript:" class="red ml20">删除</a>
                     </template>
                 </el-table-column>
@@ -123,6 +123,33 @@
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button :plain="true" type="primary" size="small" @click="submitForm('createForm')">保存</el-button>
+            </div>
+        </el-dialog>
+        <!-- 编辑用户弹窗 --> 
+        <el-dialog title="编辑账号" :visible.sync="editorUser" width="25%" center :before-close="editorUserClose">
+            <el-form :model="editorForm" size="small" hide-required-asterisk status-icon label-width="80px" class="demo-ruleForm create-form">
+                <el-form-item label="手机号">
+                    <el-input type="text" v-model="editorForm.phone" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="密码">
+                    <el-input type="password" v-model="editorForm.password" autocomplete="off" placeholder="输入新密码"></el-input>
+                </el-form-item>
+                <el-form-item label="名称">
+                    <el-input type="text" v-model="editorForm.username" placeholder="请输入使用人名称"></el-input>
+                </el-form-item>
+                <el-form-item label="角色配置">
+                    <el-select class="w100b" v-model="editorForm.editorRole" size="small">
+                        <el-option
+                        v-for="item in editorForm.editorUserRole"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="primary" size="small" @click="editor">保存</el-button>
             </div>
         </el-dialog>
     </div>
@@ -199,16 +226,37 @@ export default {
             }
         };
         return{
-            total: 0,
+            //弹出
             createAccount: false,
-            pageSize: 10,
+            editorUser: false,
+            //分页
+            total: 0,
+            pageSize: 13,
             pageIndex: 1,
+            //编辑用户
+            editorForm: {
+                userId: '',
+                phone: '',
+                password: '',
+                username: '',
+                editorRole: '',
+                editorUserRole:[{
+                    value: '1',
+                    label: '尊贵VIP'
+                },{
+                    value: '2',
+                    label: '普通管理'
+                },{
+                    value: '3',
+                    label: '普通用户'
+                }]
+            },
+            //创建用户
             createForm: {
                 checkPhone: '',
                 pass: '',
                 createUserRole: '',
                 username:'',
-                checkPass:''
             },
             tableListData:[],
             //搜索
@@ -237,12 +285,40 @@ export default {
         }
     },
     methods: {
+        //编辑用户
+        editorOpen(row){
+            let that = this;
+            that.editorUser = true;
+            console.log(row)
+            that.editorForm.userId = row.phone;
+            that.editorForm.phone = row.phone;
+            that.editorForm.username = row.username;
+            that.editorForm.editorRole = row._id;
+        },
+        editor(){
+
+        },
+        //查找
+        queryForm(){
+            let that = this;
+            if(that.query.keyword.length >0){
+                that.$axios.post('/queryUser',{
+                    type: that.query.default,
+                    keyword: that.query.keyword
+                }).then((res)=>{
+                    that.tableListData = res.data.data;
+                })
+            } else{
+                that.tableList(that.pageSize,that.pageIndex);
+            }
+        },
         //切换分页
-        handleCurrentChange(val){
+        handleCurrentChange(val){console.log(666)
             var that = this;
             that.pageIndex = val;
             that.tableList(that.pageSize,that.pageIndex);
         },
+        //数据生成
         tableList(pageSize,pageIndex){
             let that = this;
             that.$axios.post('/adminUser',{
@@ -255,6 +331,9 @@ export default {
             })
         },
         userClose(done){
+            done();
+        },
+        editorUserClose(done){
             done();
         },
         /* 转义日期 */
@@ -315,5 +394,11 @@ export default {
 }
 .w100b{
     width: 100%;
+}
+.el-select .el-tag{
+    border-color: rgba(32,160,255,.2);
+    color: #20a0ff;
+    height: 24px;
+    line-height: 24px;
 }
 </style>
