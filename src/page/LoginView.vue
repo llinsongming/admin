@@ -15,6 +15,7 @@
     </div>
 </template>
 <script>
+import store from '../vuex/store'
 export default {
     data(){
         return{
@@ -27,9 +28,7 @@ export default {
             let that = this;
             that.$axios.loginPost('/login',{username:that.input1,password:that.input2}).then(function(res){
                 if(res.status){
-                    let arr = [res.data,res.message]
-                    window.localStorage.setItem('access_token',JSON.stringify(arr));
-                    that.$router.push({name:'home',params:{username:that.input1}})
+                    that.$store.commit('changeLogin',res)
                 }else{
                     that.$message.error('账号或密码错误');
                 }

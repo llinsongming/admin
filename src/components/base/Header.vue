@@ -25,7 +25,7 @@ export default {
         }
     },
     mounted(){
-        this.name = JSON.parse(window.localStorage.getItem('access_token'))[1]
+        // this.name = JSON.parse(window.localStorage.getItem('access_token'))[1]
     },
     methods:{
         exit(){

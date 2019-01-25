@@ -27,7 +27,7 @@ export default {
                 method: 'get',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
-                    "auth": JSON.parse(window.localStorage.getItem('access_token'))[0],
+                    "auth": window.localStorage.getItem('access_token'),
 				},
 				transformRequest: [function (data) {
 					let ret = ''
@@ -57,7 +57,7 @@ export default {
 				data: _params,
 				headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
-                    "auth": JSON.parse(window.localStorage.getItem('access_token'))[0],
+                    "auth": window.localStorage.getItem('access_token'),
 				},
 				transformRequest: [function (data) {
 					let ret = ''

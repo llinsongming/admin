@@ -115,10 +115,10 @@ export default {
     methods: {
         userTableListData(){
             var that = this;
-            that.$axios.post('/user',{page:that.page,pageSize:that.pageSize}).then((res)=>{
-                that.userListData = res.data.items;
-                that.total = res.data.itemsTotle;
-            });
+            // that.$axios.post('/user',{page:that.page,pageSize:that.pageSize}).then((res)=>{
+            //     that.userListData = res.data.items;
+            //     that.total = res.data.itemsTotle;
+            // });
             
         },
         /* 转义日期 */
