@@ -26,9 +26,15 @@ export default {
     methods: {
         login(){
             let that = this;
-            that.$axios.loginPost('/login',{username:that.input1,password:that.input2}).then(function(res){
+            that.$axios.loginPost('/login',{username:that.input1,password:that.input2}).then(function(res){console.log(res)
                 if(res.status){
-                    that.$store.commit('changeLogin',res)
+                    that.$message({
+                        message: '登录成功',
+                        type: 'success'
+                    });
+                    localStorage.setItem('access_token',res.data);
+                    that.$router.push('/home');
+                    that.$store.commit('changeLogin',res);
                 }else{
                     that.$message.error('账号或密码错误');
                 }

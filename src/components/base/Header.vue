@@ -18,6 +18,8 @@
     </div>
 </template>
 <script>
+import store from '../../vuex/store'
+import { mapState } from 'vuex'
 export default {
     data(){
         return{
@@ -25,14 +27,25 @@ export default {
         }
     },
     mounted(){
-        // this.name = JSON.parse(window.localStorage.getItem('access_token'))[1]
+        this.name = store.state.username
     },
     methods:{
         exit(){
             this.$router.push('/login');
             window.localStorage.removeItem('access_token')
         }
-    }
+    },
+    computed: mapState({
+        username: function(state){//箭头函数会有this的问题
+            if(this.name == ''){console.log(777)
+                let token = localStorage.getItem('access_token');
+                if (token) {
+                    this.$store.commit('changeLogin')//同步操作
+                }
+            }
+            return state.username
+        }
+    })
 }
 </script>
 <style lang="less" scoped>

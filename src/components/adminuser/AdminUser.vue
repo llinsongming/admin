@@ -83,8 +83,9 @@
                 label="操作"
                 align="center">
                     <template slot-scope="scope">
-                        <a href="javascript:" class="blue" @click="editorOpen(scope.row)">编辑</a>
-                        <a href="javascript:" class="red ml20">删除</a>
+                        <!-- <a href="javascript:" class="blue" @click="editorOpen(scope.row)">编辑</a> -->
+                        <el-button type="primary" title="编辑" icon="el-icon-edit" :disabled="disabled" circle @click="editorOpen(scope.row)"></el-button>
+                        <el-button type="danger" title="删除" icon="el-icon-delete" :disabled="disabled" circle></el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -138,7 +139,7 @@
                     <el-input type="text" v-model="editorForm.username" placeholder="请输入使用人名称"></el-input>
                 </el-form-item>
                 <el-form-item label="角色配置">
-                    <el-select class="w100b" v-model="editorForm.editorRole" size="small">
+                    <el-select class="w100b" v-model="editorForm.userRole" size="small">
                         <el-option
                         v-for="item in editorForm.editorUserRole"
                         :key="item.value"
@@ -149,13 +150,14 @@
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button type="primary" size="small" @click="editor">保存</el-button>
+                <el-button type="primary" size="small" @click="editor(editorForm)">保存</el-button>
             </div>
         </el-dialog>
     </div>
 </template>
 <script>
 import {dateFor} from '../../api/utils'
+import store from '../../vuex/store'
 export default {
     name:'adminUser',
     data(){
@@ -226,6 +228,9 @@ export default {
             }
         };
         return{
+            //禁用
+            disabled: false,
+            userRole: '',
             //弹出
             createAccount: false,
             editorUser: false,
@@ -239,7 +244,7 @@ export default {
                 phone: '',
                 password: '',
                 username: '',
-                editorRole: '',
+                userRole: '',
                 editorUserRole:[{
                     value: '1',
                     label: '尊贵VIP'
@@ -285,18 +290,31 @@ export default {
         }
     },
     methods: {
+        //限权
+        role(){
+            let that = this;
+            if(that.userRole == '0' || that.userRole == '1'){
+                that.disabled = false
+            } else{
+                that.disabled = true
+            }
+        },
         //编辑用户
         editorOpen(row){
             let that = this;
             that.editorUser = true;
-            console.log(row)
-            that.editorForm.userId = row.phone;
+            that.editorForm.userId = row._id;
             that.editorForm.phone = row.phone;
             that.editorForm.username = row.username;
-            that.editorForm.editorRole = row._id;
+            that.editorForm.userRole = row.userRole;
         },
-        editor(){
-
+        //编辑用户保存
+        editor(form){
+            let that = this;
+            form = JSON.stringify(form);
+            that.$axios.post('/editorUser',{form}).then((res)=>{
+                console.log(res)
+            })
         },
         //查找
         queryForm(){
@@ -313,7 +331,7 @@ export default {
             }
         },
         //切换分页
-        handleCurrentChange(val){console.log(666)
+        handleCurrentChange(val){
             var that = this;
             that.pageIndex = val;
             that.tableList(that.pageSize,that.pageIndex);
@@ -366,7 +384,9 @@ export default {
         }
     },
     mounted(){
-        this.tableList(this.pageSize,this.pageIndex)
+        this.tableList(this.pageSize,this.pageIndex);
+        this.userRole = store.state.userRole;
+        this.role();
     }
 }
 </script>
@@ -400,5 +420,8 @@ export default {
     color: #20a0ff;
     height: 24px;
     line-height: 24px;
+}
+.el-button.is-circle {
+    padding: 6px;
 }
 </style>

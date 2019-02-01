@@ -39,7 +39,8 @@ export default {
             }).then((res) => {
                 endLoading()//loading结束
                 if(!res.data.status && res.data.message == 'unauth'){
-                    router.push({name: 'LoginView'});
+                    localStorage.removeItem('access_token');
+                    router.push('/login')
                 } else {
                     resolve(res.data);
                 }
@@ -50,8 +51,8 @@ export default {
     },
     post(_url, _params = {}){
         return new Promise((resolve, reject) => {
-            // startLoading()//loading开始
-            axios({
+             startLoading()//loading开始
+             axios({
 				url: baseUrl + _url,
 				method: 'post',
 				data: _params,
@@ -67,9 +68,10 @@ export default {
                     return ret
 				}],
             }).then(res => {
-                // endLoading()//loading结束
+                 endLoading()//loading结束
                 if(!res.data.status && res.data.message == 'unauth'){
-                    router.push({name: 'LoginView'});
+                    localStorage.removeItem('access_token');
+                    router.push('/login')
                 } else {
                     resolve(res.data);
                 }
@@ -81,7 +83,7 @@ export default {
     },
     loginPost(_url, _params = {}){
         return new Promise((resolve, reject) => {
-            // startLoading()//loading开始
+             startLoading()//loading开始
             axios({
 				url: baseUrl + _url,
 				method: 'post',
@@ -98,7 +100,7 @@ export default {
                     return ret
 				}],
             }).then(res => {
-                // endLoading()//loading结束
+                 endLoading()//loading结束
                 if(!res.data.status && res.data.message == 'unauth'){
                     router.push({name: 'LoginView'});
                 } else {

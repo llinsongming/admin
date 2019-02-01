@@ -8,18 +8,41 @@ const store = new Vuex.Store({
   state: {
     // 存储token
     Authorization: localStorage.getItem('access_token') ? localStorage.getItem('access_token') : '',
-    user: {
-      username: ''
-    }
+    username: '',
+    userRole: ''
   },
  
   mutations: {
     // 修改token，并将token存入localStorage
-    changeLogin (state, _user) {
+    changeLogin (state, _user) {console.log(_user)
+      localStorage.setItem('access_token',_user.data);
+      localStorage.setItem('username',_user.status.data[0].username);
+      localStorage.setItem('userRole',_user.status.data[0].userRole);
       state.Authorization = _user.data;
-      state.user.username = _user.message;
-      this.$router.push('/home')
-      console.log(this.$router)
+      state.username = _user.status.data[0].username;
+      state.userRole = _user.status.data[0].userRole;
+    },
+    signOut (state, _user) {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('username');
+      localStorage.removeItem('userRole');
+      state.Authorization = '';
+      state.username = '';
+      state.userRole = '';
+    }
+  },
+  
+  // getters 只会依赖 state 中的成员去更新
+  getters : {
+    userName(state) {console.log(121)
+      if (!state.username) {
+        let token = localStorage.getItem('access_token');
+        if (token) {
+          let userInfo = localStorage.getItem('username');
+          state.username = userInfo;
+        }
+      }
+      return state.username
     }
   }
 });
