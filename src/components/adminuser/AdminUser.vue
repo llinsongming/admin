@@ -84,8 +84,8 @@
                 align="center">
                     <template slot-scope="scope">
                         <!-- <a href="javascript:" class="blue" @click="editorOpen(scope.row)">编辑</a> -->
-                        <el-button type="primary" title="编辑" icon="el-icon-edit" :disabled="disabled" circle @click="editorOpen(scope.row)"></el-button>
-                        <el-button type="danger" title="删除" icon="el-icon-delete" :disabled="disabled" circle></el-button>
+                        <el-button type="primary" title="编辑" icon="el-icon-edit" :disabled="userRole" circle @click="editorOpen(scope.row)"></el-button>
+                        <el-button type="danger" title="删除" icon="el-icon-delete" :disabled="userRole" circle></el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -158,6 +158,7 @@
 <script>
 import {dateFor} from '../../api/utils'
 import store from '../../vuex/store'
+import { mapState,mapMutations,mapGetters } from 'vuex'
 export default {
     name:'adminUser',
     data(){
@@ -229,8 +230,8 @@ export default {
         };
         return{
             //禁用
-            disabled: false,
-            userRole: '',
+            // disabled: false,
+            // userRole: userRole,
             //弹出
             createAccount: false,
             editorUser: false,
@@ -290,15 +291,6 @@ export default {
         }
     },
     methods: {
-        //限权
-        role(){
-            let that = this;
-            if(that.userRole == '0' || that.userRole == '1'){
-                that.disabled = false
-            } else{
-                that.disabled = true
-            }
-        },
         //编辑用户
         editorOpen(row){
             let that = this;
@@ -385,9 +377,11 @@ export default {
     },
     mounted(){
         this.tableList(this.pageSize,this.pageIndex);
-        this.userRole = store.state.userRole;
-        this.role();
-    }
+    },
+    computed:{
+		...mapState(['userRole']),
+		...mapGetters(['userRole'])
+	},
 }
 </script>
 <style lang="less" scoped>

@@ -12,40 +12,26 @@
             </h1>
         </div>
         <div class="exit fr">
-            {{name}}
+            {{username}}
             <el-button type="text" @click="exit">退出</el-button>
         </div>
     </div>
 </template>
 <script>
 import store from '../../vuex/store'
-import { mapState } from 'vuex'
+import { mapState,mapMutations,mapGetters } from 'vuex'
 export default {
-    data(){
-        return{
-            name:''
-        }
-    },
-    mounted(){
-        this.name = store.state.username
-    },
     methods:{
         exit(){
             this.$router.push('/login');
-            window.localStorage.removeItem('access_token')
+            this.$store.commit('signOut');
         }
     },
-    computed: mapState({
-        username: function(state){//箭头函数会有this的问题
-            if(this.name == ''){console.log(777)
-                let token = localStorage.getItem('access_token');
-                if (token) {
-                    this.$store.commit('changeLogin')//同步操作
-                }
-            }
-            return state.username
-        }
-    })
+    computed:{
+        //计算用户名的属性
+		...mapState(['username']),
+		...mapGetters(['username'])
+	},
 }
 </script>
 <style lang="less" scoped>
