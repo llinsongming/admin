@@ -85,7 +85,7 @@
                     <template slot-scope="scope">
                         <!-- <a href="javascript:" class="blue" @click="editorOpen(scope.row)">编辑</a> -->
                         <el-button type="primary" title="编辑" icon="el-icon-edit" :disabled="userRole" circle @click="editorOpen(scope.row)"></el-button>
-                        <el-button type="danger" title="删除" icon="el-icon-delete" :disabled="userRole" circle></el-button>
+                        <el-button type="danger" title="删除" icon="el-icon-delete" :disabled="userRole" circle @click="deleteUser(scope.row)"></el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -150,7 +150,7 @@
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button type="primary" size="small" @click="editor(editorForm)">保存</el-button>
+                <el-button type="primary" size="small" :plain="true" @click="editor(editorForm)">保存</el-button>
             </div>
         </el-dialog>
     </div>
@@ -291,6 +291,33 @@ export default {
         }
     },
     methods: {
+        //删除用户
+        deleteUser(row){
+            let that = this;
+            this.$confirm('确定删除该用户?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+                center: true
+                }).then(() => {
+                this.$axios.post('/deleteUser',{_id:row._id}).then(function(res){
+                    if(res.status){
+                        that.$message({
+                            type: 'success',
+                            message: '删除成功!'
+                        });
+                        that.tableList(that.pageSize,that.pageIndex);
+                    } else{
+                        that.$message.error('这是哥的账号,你删不掉的');
+                    }
+                })
+                }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                });
+            });
+        },
         //编辑用户
         editorOpen(row){
             let that = this;
@@ -305,7 +332,12 @@ export default {
             let that = this;
             form = JSON.stringify(form);
             that.$axios.post('/editorUser',{form}).then((res)=>{
-                console.log(res)
+                that.editorUser = false;
+                    this.$message({
+                    message: '编辑成功',
+                    type: 'success'
+                });
+                this.tableList(this.pageSize,this.pageIndex);
             })
         },
         //查找

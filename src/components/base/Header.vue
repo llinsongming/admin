@@ -23,8 +23,8 @@ import { mapState,mapMutations,mapGetters } from 'vuex'
 export default {
     methods:{
         exit(){
-            this.$router.push('/login');
             this.$store.commit('signOut');
+            this.$router.push('/login');
         }
     },
     computed:{
