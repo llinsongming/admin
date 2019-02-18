@@ -8,6 +8,11 @@ import store from './vuex/store'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import http from './api/http.js'
+//ue
+import '../static/UE/ueditor.config.js'
+import '../static/UE/ueditor.all.min.js'
+import '../static/UE/lang/zh-cn/zh-cn.js'
+import '../static/UE/ueditor.parse.min.js'
 //定义全局变量
 Vue.prototype.$axios=http;
 Vue.use(ElementUI);

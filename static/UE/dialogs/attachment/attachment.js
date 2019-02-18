@@ -6,8 +6,7 @@
  */
 
 (function () {
-    debugger
-    alert(11111111111111111111111);
+
     var uploadFile,
         onlineFile;
 
@@ -550,7 +549,6 @@
             return readyFile;
         },
         getInsertList: function () {
-            debugger
             var i, link, data, list = [],
                 prefix = editor.getOpt('fileUrlPrefix');
             for (i = 0; i < this.fileList.length; i++) {
@@ -629,7 +627,7 @@
         /* 向后台拉取图片列表数据 */
         getFileData: function () {
             var _this = this;
-            debugger
+
             if(!_this.listEnd && !this.isLoadingData) {
                 this.isLoadingData = true;
                 ajax.request(editor.getActionUrl(editor.getOpt('fileManagerActionName')), {
@@ -640,7 +638,6 @@
                         }, editor.queryCommandValue('serverparam')),
                     method: 'get',
                     onsuccess: function (r) {
-                        debugger
                         try {
                             var json = eval('(' + r.responseText + ')');
                             if (json.state == 'SUCCESS') {
@@ -669,7 +666,6 @@
         },
         /* 添加图片到列表界面上 */
         pushData: function (list) {
-            debugger
             var i, item, img, filetype, preview, icon, _this = this,
                 urlPrefix = editor.getOpt('fileManagerUrlPrefix');
             for (i = 0; i < list.length; i++) {

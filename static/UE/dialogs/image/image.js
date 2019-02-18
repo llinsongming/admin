@@ -370,7 +370,7 @@
                 accept: {
                     title: 'Images',
                     extensions: acceptExtensions,
-                    mimeTypes: 'image/gif,image/jpeg,image/png,image/jpg,image/bmp'
+                    mimeTypes: 'image/*'
                 },
                 swf: '../../third-party/webuploader/Uploader.swf',
                 server: actionUrl,
@@ -855,6 +855,7 @@
         /* 向后台拉取图片列表数据 */
         getImageData: function () {
             var _this = this;
+
             if(!_this.listEnd && !this.isLoadingData) {
                 this.isLoadingData = true;
                 var url = editor.getActionUrl(editor.getOpt('imageManagerActionName')),
@@ -899,7 +900,7 @@
             var i, item, img, icon, _this = this,
                 urlPrefix = editor.getOpt('imageManagerUrlPrefix');
             for (i = 0; i < list.length; i++) {
-                if(list[i]) {
+                if(list[i] && list[i].url) {
                     item = document.createElement('li');
                     img = document.createElement('img');
                     icon = document.createElement('span');
@@ -910,8 +911,8 @@
                         }
                     })(img));
                     img.width = 113;
-                    img.setAttribute('src', urlPrefix + list[i] + (list[i].indexOf('?') == -1 ? '?noCache=':'&noCache=') + (+new Date()).toString(36) );
-                    img.setAttribute('_src', urlPrefix + list[i]);
+                    img.setAttribute('src', urlPrefix + list[i].url + (list[i].url.indexOf('?') == -1 ? '?noCache=':'&noCache=') + (+new Date()).toString(36) );
+                    img.setAttribute('_src', urlPrefix + list[i].url);
                     domUtils.addClass(icon, 'icon');
 
                     item.appendChild(img);

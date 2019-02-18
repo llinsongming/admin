@@ -27,15 +27,30 @@
                 <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
             </el-form-item>
             <el-form-item label="新闻内容:" prop="newsContent">
-                <el-input v-model="form.title"></el-input>
+                <Uediter :value="ueditor.value" :config="ueditor.config" ref="ue"></Uediter>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" class="btn-primary">保存</el-button>
+                <el-button type="primary" class="btn-default">预览</el-button>
             </el-form-item>
         </el-form>
     </div>
 </template>
 <script>
+import Uediter from '../base/UE.vue'
 export default {
+    components:{
+        Uediter
+    },
     data(){
         return{
+            ueditor: {
+                value: '编辑器默认文字',
+                config: {
+                    // initialFrameWidth: 800,
+                    initialFrameHeight: 440
+                }
+            },
             form: {
                 title: '',
                 url: '',

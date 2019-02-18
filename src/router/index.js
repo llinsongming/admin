@@ -33,6 +33,7 @@ import AllComments from '@/components/comment/AllComments'
 Vue.use(Router)
 
 const router =  new Router({
+  mode: 'history',
   routes: [
     {
       path: '/login',

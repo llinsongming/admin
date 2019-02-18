@@ -1,7 +1,7 @@
 /*!
  * UEditor
  * version: ueditor
- * build: Wed Aug 10 2016 11:05:20 GMT+0800 (CST)
+ * build: Wed Aug 10 2016 11:06:16 GMT+0800 (CST)
  */
 
 (function(){
@@ -8073,7 +8073,7 @@ UE.Editor.defaultOptions = function(editor){
 // core/loadconfig.js
 (function(){
 
-    UE.Editor.prototype.loadServerConfig = function () {
+    UE.Editor.prototype.loadServerConfig = function(){
         var me = this;
         setTimeout(function(){
             try{
@@ -8098,11 +8098,11 @@ UE.Editor.defaultOptions = function(editor){
                             showErrorMsg(me.getLang('loadconfigFormatError'));
                         }
                     },
-                    'onerror': function () {
+                    'onerror':function(){
                         showErrorMsg(me.getLang('loadconfigHttpError'));
                     }
                 });
-            } catch (e) {
+            } catch(e){
                 showErrorMsg(me.getLang('loadconfigError'));
             }
         });

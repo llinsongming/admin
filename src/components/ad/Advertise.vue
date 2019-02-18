@@ -23,15 +23,15 @@
             </el-form-item>
             <el-form-item label="广告图片:" >
                 <el-upload
-                action="https://jsonplaceholder.typicode.com/posts/"
-                :headers="headers"
+                action="http://120.79.174.103:666/fileUPload"
                 list-type="picture-card"
                 :on-preview="handlePictureCardPreview"
+                :before-upload="beforeAvatarUpload"
                 :on-remove="handleRemove">
                 <i class="el-icon-plus"></i>
                 </el-upload>
                 <el-dialog :visible.sync="dialogVisible">
-                <img width="100%" :src="dialogImageUrl" alt="">
+                    <img width="100%" :src="dialogImageUrl" alt="">
                 </el-dialog>
             </el-form-item>
             <el-form-item>
@@ -66,6 +66,7 @@ export default {
                 ],
             },
             dialogImageUrl: '',
+            imageUrl: '',
             dialogVisible: false,
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -75,14 +76,23 @@ export default {
     },
     methods: {
         handleRemove(file, fileList) {
-            // console.log(file, fileList);
+            console.log(file, fileList);
         },
         handlePictureCardPreview(file) {
             this.dialogImageUrl = file.url;
             this.dialogVisible = true;
         },
-        formatTooltip(val) {
-            return val / 100;
+        beforeAvatarUpload(file) {
+            const isJPG = file.type === 'image/jpeg' || 'image/png' || 'image/gif';
+            const isLt2M = file.size / 1024 / 1024 < 2;
+
+            if (!isJPG) {
+            this.$message.error('上传头像图片只能是 JPG 格式!');
+            }
+            if (!isLt2M) {
+            this.$message.error('上传头像图片大小不能超过 2MB!');
+            }
+            return isJPG && isLt2M;
         }
     },
     mounted(){
