@@ -10,14 +10,14 @@
             </el-form-item>
             <el-form-item label="有效时间:" required>
                 <el-col :span="9">
-                    <el-form-item prop="date1">
-                        <el-date-picker type="date" placeholder="请选择开始时间" v-model="form.date1" style="width: 100%;"></el-date-picker>
+                    <el-form-item prop="startTime">
+                        <el-date-picker type="date" placeholder="请选择开始时间" v-model="form.startTime" style="width: 100%;"></el-date-picker>
                     </el-form-item>
                 </el-col>
                 <el-col class="line" :span="1" style="text-align:center;">-</el-col>
                 <el-col :span="9">
-                    <el-form-item prop="date2">
-                        <el-date-picker type="date" placeholder="请选择结束时间" v-model="form.date2" style="width: 100%;"></el-date-picker>
+                    <el-form-item prop="endTime">
+                        <el-date-picker type="date" placeholder="请选择结束时间" v-model="form.endTime" style="width: 100%;"></el-date-picker>
                     </el-form-item>
                 </el-col>
             </el-form-item>
@@ -27,6 +27,11 @@
                 list-type="picture-card"
                 :on-preview="handlePictureCardPreview"
                 :before-upload="beforeAvatarUpload"
+                name="advertise"
+                ref="upImg"
+                multiple="true"
+                @on-change="pictureShow"
+                :on-success="handleSucess"
                 :on-remove="handleRemove">
                 <i class="el-icon-plus"></i>
                 </el-upload>
@@ -36,7 +41,7 @@
             </el-form-item>
             <el-form-item>
                 <div class="slider-btn">
-                    <el-slider v-model="value3" :show-tooltip="false"></el-slider>
+                    <el-slider v-model="form.sliderVal" :show-tooltip="false" @change="change('form')"></el-slider>
                 </div>
                 <div class="gray">右滑后，发布广告将会生效</div>
             </el-form-item>
@@ -50,33 +55,38 @@ export default {
             form: {
                 title: '',
                 url: '',
-                date1: '',
-                date2: '',
+                startTime: '',
+                endTime: '',
+                sliderVal: 0,
+                picture:'',
+                newPic:''
             },
             rules: {
                 title: [
                     { required: true, message: '广告标题不能为空', trigger: 'blur' },
                     { min: 3, max: 50, message: '长度在 3 到 50 个字符', trigger: 'blur' }
                 ],
-                date1: [
+                startTime: [
                     { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
                 ],
-                date2: [
+                endTime: [
                     { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
                 ],
             },
             dialogImageUrl: '',
-            imageUrl: '',
+            // imageUrl: '',
             dialogVisible: false,
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            value3: 0,
+            }
         }
     },
     methods: {
         handleRemove(file, fileList) {
             console.log(file, fileList);
+        },
+        handleSucess(response, file, fileList){
+            console.log(response)
         },
         handlePictureCardPreview(file) {
             this.dialogImageUrl = file.url;
@@ -93,6 +103,24 @@ export default {
             this.$message.error('上传头像图片大小不能超过 2MB!');
             }
             return isJPG && isLt2M;
+        },
+        change(formName){
+            let that = this;
+            if(that.form.sliderVal == 100){
+                that.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        alert('submit!');
+                    } else {
+                        console.log('error submit!!');
+                        that.form.sliderVal = 0
+                        return false;
+                    }
+                });
+            }
+        },
+        pictureShow(file){
+            this.picture = file.rawUrl
+            this.newPic = file.path
         }
     },
     mounted(){
