@@ -29,10 +29,10 @@
                 :before-upload="beforeAvatarUpload"
                 name="advertise"
                 ref="upImg"
-                multiple="true"
                 @on-change="pictureShow"
                 :on-success="handleSucess"
-                :on-remove="handleRemove">
+                :on-remove="handleRemove"
+                multiple>
                 <i class="el-icon-plus"></i>
                 </el-upload>
                 <el-dialog :visible.sync="dialogVisible">
@@ -78,7 +78,8 @@ export default {
             dialogVisible: false,
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
-            }
+            },
+            imglist: []
         }
     },
     methods: {
@@ -86,7 +87,8 @@ export default {
             console.log(file, fileList);
         },
         handleSucess(response, file, fileList){
-            console.log(response)
+            console.log( fileList)
+            this.imglist = fileList;
         },
         handlePictureCardPreview(file) {
             this.dialogImageUrl = file.url;
@@ -107,15 +109,19 @@ export default {
         change(formName){
             let that = this;
             if(that.form.sliderVal == 100){
-                that.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        alert('submit!');
-                    } else {
-                        console.log('error submit!!');
-                        that.form.sliderVal = 0
-                        return false;
-                    }
-                });
+                // that.$refs[formName].validate((valid) => {
+                //     if (valid) {
+                //         alert('submit!');
+                //     } else {
+                        
+                //         console.log('error submit!!');
+                //         that.form.sliderVal = 0
+                //         return false;
+                //     }
+                // });
+                that.$axios.post('/fileUPload',that.imglist).then((res)=>{
+
+                })
             }
         },
         pictureShow(file){
